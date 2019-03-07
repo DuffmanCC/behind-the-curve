@@ -8,7 +8,7 @@ import PrettyCheck from 'pretty-checkbox-vue/check';
 
 Vue.config.productionTip = false;
 Vue.use(VueKonva);
-Vue.use(VModal);
+Vue.use(VModal, { dialog: true });
 Vue.component('pCheck', PrettyCheck);
 
 window.Event = new Vue();

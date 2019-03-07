@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full lg:w-1/2">
+  <div class="max-w-xl m-auto relative">
     <GmapMap
       :center="{lat:0, lng:0}"
       :zoom="3"
@@ -18,13 +18,20 @@
         @dragend="sendDistanceInMap()"
       />
     </GmapMap>
-    <p v-if="isDistanceSet()" class="absolute pin-b pin-l pl-20 pb-12 text-2xl text-grey-darker">Distance: {{ distanceBetweenMarkers }} km</p>
+    <div class="relative p-1 text-white bg-black opacity-75 flex items-center justify-between w-full">
+      <button @click="$modal.hide('map')" class="mr-3">
+        <i class="fas fa-times text-xl text-white"></i>
+      </button> 
+      <div v-if="isDistanceSet()" class="text-xl font-thin">Distance: {{ distanceBetweenMarkers }} {{ kmOrMiles }}</div>
+    </div>   
   </div>
 </template>
 
 <script>
   export default {
     name: 'Gmap',
+
+    props: ['isMetric'],
 
     data() {
       return {
@@ -37,7 +44,21 @@
       distanceBetweenMarkers() {
         let distance = this.getDistance(this.markers[0].position, this.markers[1].position);
         Event.$emit('distanceFromMap', distance);
+
+        if (!this.isMetric) {
+          distance = distance * 0.621371;
+          return distance.toFixed(2);
+        }
+
         return distance;
+      },
+
+      kmOrMiles() {
+        if (!this.isMetric) {
+          return 'miles';
+        } 
+
+        return 'km';
       }
     },
 

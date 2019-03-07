@@ -4,7 +4,14 @@
       <div class="container text-blue flex flex-col items-center">
         <Header></Header>
 
-        <Content :distance="distance"></Content>
+        <div class="mb-6">
+          <pCheck class="p-switch p-fill pretty" color="primary" toggle v-model="isMetric">
+            metric system
+            <label slot="off-label">imperial system</label>
+          </pCheck>
+        </div>
+
+        <Content :distanceFromMap="distanceFromMap" :isMetric="isMetric"></Content>
 
         <Examples></Examples>
 
@@ -12,17 +19,20 @@
       </div><!-- .container -->
     </div>
 
-    <modal name="info" width="100%">
+    <modal name="info" class="w-full">
       <div class="p-5">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt minus voluptate eos molestiae nisi at facere modi, dolores obcaecati? Sapiente ex ullam corporis voluptatibus fugit debitis, error harum. At impedit, quisquam error amet quibusdam, temporibus. Sit odio repellat voluptatem vel facilis consectetur expedita inventore incidunt, optio natus, nesciunt praesentium officiis rem saepe sed ipsa corrupti, quidem aut ipsum porro ex adipisci velit suscipit voluptatum! Velit ullam quasi quas itaque, consequuntur, asperiores nobis reprehenderit ut voluptate totam quos eum alias quisquam delectus aut ex inventore beatae ratione cupiditate dolores! Repudiandae assumenda deleniti at ab vero error ut, eos animi vel facere.
+        <h3 class="mb-5">Info:</h3>
+
+        <ul class="list-reset">
+          <li>Earth radius: 6371000 meters.</li>
+          <li>1 mile = 1609.34 km.</li>
+          <li>1 foot = 0.3048 meters.</li>
+        </ul>      
       </div>   
     </modal>
 
     <modal name="map" width="100%" height="auto" classes="p-5 relative">
-      <Gmap style="height: auto"></Gmap>
-      <button @click="$modal.hide('map')" class="absolute pin-l pin-b p-12">
-        <i class="fas fa-times text-3xl text-grey-darker"></i>
-      </button> 
+      <Gmap style="height: auto" :isMetric="isMetric"></Gmap>
     </modal>
   </div>
 </template>
@@ -44,13 +54,16 @@ export default {
 
   data() {
     return {
-      distance: '30'
+      distanceFromMap: '',
+      distanceFromExample: '',
+      isMetric: true
     }
   },
 
   created() {
     // global events
-    Event.$on('distanceFromMap', distanceFromMap => this.distance = distanceFromMap);
+    Event.$on('distanceFromMap', distanceFromMap => this.distanceFromMap = distanceFromMap);
+    Event.$on('dataFromExmaple', (dataFromExmaple) => console.log(dataFromExmaple));
   },
 
   methods: {
