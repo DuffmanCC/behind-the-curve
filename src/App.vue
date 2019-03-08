@@ -11,11 +11,18 @@
           </pCheck>
         </div>
 
-        <Content :distanceFromMap="distanceFromMap" :isMetric="isMetric"></Content>
+        <Content 
+          :distanceFromMap="distanceFromMap" 
+          :isMetric="isMetric"
+          :heightFromExampleObserver="heightFromExampleObserver"
+          :heightFromExampleObject="heightFromExampleObject"
+          :isFromExample="isFromExample"
+          >
+        </Content>
 
         <Examples></Examples>
 
-        <Paint></Paint>
+        <!-- <Paint></Paint> -->
       </div><!-- .container -->
     </div>
 
@@ -55,15 +62,22 @@ export default {
   data() {
     return {
       distanceFromMap: '',
-      distanceFromExample: '',
-      isMetric: true
+      isMetric: true,
+      heightFromExampleObserver: '',
+      heightFromExampleObject: '',
+      isFromExample: false
     }
   },
 
   created() {
     // global events
     Event.$on('distanceFromMap', distanceFromMap => this.distanceFromMap = distanceFromMap);
-    Event.$on('dataFromExmaple', (dataFromExmaple) => console.log(dataFromExmaple));
+    Event.$on('dataFromExmaple', dataFromExmaple => {
+      this.distanceFromMap = dataFromExmaple.distance;
+      this.heightFromExampleObserver = dataFromExmaple.from.height;
+      this.heightFromExampleObject = dataFromExmaple.to.height;
+      this.isFromExample = true;
+    });
   },
 
   methods: {

@@ -107,9 +107,9 @@
             to: {
               description: this.to.description, 
               place: this.to.place,
-              height: 1500,
-              lat: 454,
-              lng: 435
+              height: this.to.height,
+              lat: this.to.lat,
+              lng: this.to.lng
             },
           });
         }

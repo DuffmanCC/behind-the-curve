@@ -33,7 +33,7 @@
             to: {
               description: 'Sierra de Tramuntana',
               place: 'Mallorca - Spain',
-              height: 1500,
+              height: 1000,
               lat: 39.70,
               lng: 2.65
             },

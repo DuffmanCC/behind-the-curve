@@ -48,7 +48,7 @@
 export default {
   name: 'Content',
 
-  props: ['distanceFromMap', 'isMetric'],
+  props: ['distanceFromMap', 'isMetric', 'heightFromExampleObserver', 'heightFromExampleObject', 'isFromExample'],
 
   data() {
     return {
@@ -120,6 +120,10 @@ export default {
           return this.initialHeightObjectImperial;
         }
 
+        if (this.isFromExample) {
+          return this.heightFromExampleObject;
+        }
+
         return this.initialHeightObject;
       },
 
@@ -136,6 +140,10 @@ export default {
       get() {
         if (!this.isMetric) {
           return this.initialObserverImperial;
+        }
+
+        if (this.isFromExample) {
+          return this.heightFromExampleObserver;
         }
 
         return this.initialObserver;
