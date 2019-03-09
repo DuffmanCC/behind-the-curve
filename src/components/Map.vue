@@ -17,48 +17,50 @@
         @dragstart="setFirstMaker"
         @dragend="sendDistanceInMap()"
       />
+      <GmapPolyline 
+        v-if="line.length > 1" 
+        :path="line" 
+        :editable="false">
+      </GmapPolyline>
     </GmapMap>
     <div class="relative p-1 text-white bg-black opacity-75 flex items-center justify-between w-full">
-      <button @click="$modal.hide('map')" class="mr-3">
+      <button @click="$modal.hide('map')" class="ml-1">
         <i class="fas fa-times text-xl text-white"></i>
       </button> 
-      <div v-if="isDistanceSet()" class="text-xl font-thin">Distance: {{ distanceBetweenMarkers }} {{ kmOrMiles }}</div>
+      <div v-if="isDistanceSet()" class="text-xl font-thin">Distance: {{ distanceBetweenMarkers }} km</div>
     </div>   
   </div>
 </template>
 
 <script>
+  import { toRad, getDistanceFromTwoPoints } from '../utils/functions';
+
   export default {
     name: 'Gmap',
-
-    props: ['isMetric'],
 
     data() {
       return {
         markers: [],
-        isFirstMaker: ''
+        isFirstMarker: '',
       }
     },
 
     computed: {
       distanceBetweenMarkers() {
-        let distance = this.getDistance(this.markers[0].position, this.markers[1].position);
+        let distance = getDistanceFromTwoPoints(this.markers[0].position.lat, this.markers[0].position.lng, this.markers[1].position.lat, this.markers[1].position.lng).toFixed(2);
         Event.$emit('distanceFromMap', distance);
 
-        if (!this.isMetric) {
-          distance = distance * 0.621371;
-          return distance.toFixed(2);
-        }
-
         return distance;
-      },
+      }, 
 
-      kmOrMiles() {
-        if (!this.isMetric) {
-          return 'miles';
-        } 
+      line() {
+        let line = [];
 
-        return 'km';
+        this.markers.forEach((marker) => {
+          line.push({lat: marker.position.lat, lng: marker.position.lng})
+        })
+
+        return line;  
       }
     },
 
@@ -76,14 +78,14 @@
 
       setFirstMaker(e) {
         if (e.latLng.lat() === this.markers[0].position.lat) {
-          this.isFirstMaker = true;
+          this.isFirstMarker = true;
         } else {
-          this.isFirstMaker = false;
+          this.isFirstMarker = false;
         }
       },
 
       updateMarker(e) {
-        if (this.isFirstMaker) {
+        if (this.isFirstMarker) {
           this.markers[0].position = {
             lat: e.latLng.lat(),
             lng: e.latLng.lng()
@@ -104,25 +106,8 @@
         return false;
       },
 
-      rad(x) {
-        return x * Math.PI / 180;
-      },
-
-      getDistance(p1, p2) {
-        let R = 6371000; // Average radius
-        let dLat = this.rad(p2.lat - p1.lat);
-        let dLong = this.rad(p2.lng - p1.lng);
-        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(this.rad(p1.lat)) * Math.cos(this.rad(p2.lat)) *
-          Math.sin(dLong / 2) * Math.sin(dLong / 2);
-        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        let d = R * c;
-        let distance = (d / 1000).toFixed(2); // returns the distance in km
-        return distance;
-      },
-
       sendDistanceInMap() {
-        Event.$emit('distanceFromMap', this.getDistance(this.markers[0].position, this.markers[1].position));
+        Event.$emit('distanceFromMap', this.distanceBetweenMarkers);
       }
     }
   }

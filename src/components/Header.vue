@@ -1,5 +1,5 @@
 <template>
-  <header class="p-5 relative">
+  <header class="p-5 relative w-full">
     <span class="fa-stack absolute pin-r" @click="showInfo()">
       <i class="far fa-circle fa-stack-2x"></i>
       <i class="fas fa-info fa-stack-1x"></i>
@@ -9,7 +9,7 @@
       <i class="fas fa-globe-africa" style="font-size: 150px"></i>
     </div>
     
-    <h1 class="mb-10 text-3xl text-center">Earth Curvature Calculator</h1>
+    <h1 class="mb-10 text-3xl text-center font-thin">Earth Curvature Calculator</h1>
   </header>
 </template>
 

@@ -1,37 +1,41 @@
 <template>
-  <section class="border p-5 mb-5 rounded font-thin max-w-sm w-full">
+  <section class="mb-5 font-thin w-full">
+    <div class="mb-16">
+      <p>Enter the height of the observer, the distance to the object and the height of the object or use the examples below to feed the inputs.</p>
+    </div>
+
     <div class="mb-6">
       <label class="block mb-2 pr-4">
-        Height of the observer in {{ meterOrFeet }}:
+        Height of the observer in meters:
       </label>
-      <input class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="observer">
+      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="observer">
       <p class="text-red text-sm" v-if="observer <= 0">Hight of the observer must be greater than 0.</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <p class="mb-2 pr-4">Horizon distance:</p>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ horizonDistance | unitsKm(isMetric) }}</p>
+      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ horizonDistance | km }}</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
-      <p class="mb-2 pr-4">Distance to object in {{ kmOrMiles }}:</p>
+      <p class="mb-2 pr-4">Distance to object in Km:</p>
       <p class="text-sm italic mb-2">
-        Enter a distance in {{ kmOrMiles }} or use the map <span class="font-normal cursor-pointer" @click="showMap()"><i class="fas fa-map-marked-alt ml-2 text-xl"></i></span>
+        Enter a distance in km or use the map <span class="font-normal cursor-pointer" @click="showMap()"><i class="fas fa-map-marked-alt ml-2 text-xl"></i></span>
       </p>
 
-      <input class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" v-model="distanceToObject">
+      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" v-model="distanceToObject">
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <p class="mb-2 pr-4">Under horizon:</p>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ underHorizon | unitsM(isMetric) }}</p>
+      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ underHorizon | m }}</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <label class="block mb-2 pr-4">
-        Height of the object you want to see in {{ meterOrFeet }}:
+        Height of the object you want to see in meters:
       </label>
-      <input class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="heightObject">
+      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="heightObject">
       <p class="text-red text-sm" v-if="heightObject < 0">Hight of the building must be greater than 0.</p>
     </div>
 
@@ -39,7 +43,7 @@
       <label class="block mb-2 pr-4" for="inline-full-name">
         The top of the object is {{ isVisible() }}:
       </label>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ buildingVisible | unitsM(isMetric) }}</p>
+      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ buildingVisible | m }}</p>
     </div>
   </section>
 </template>
@@ -48,61 +52,36 @@
 export default {
   name: 'Content',
 
-  props: ['distanceFromMap', 'isMetric', 'heightFromExampleObserver', 'heightFromExampleObject', 'isFromExample'],
+  props: ['distanceFromMap', 'heightFromExampleObserver', 'heightFromExampleObject', 'isFromExample'],
 
   data() {
     return {
-      initialObserver: 30, // m
-      initialObserverImperial: 98.4252, // m
+      initialObserver: 30,
       earthRadius: 6371000,
       initialHeightObject: 100,
-      initialHeightObjectImperial: 328.084,
       initialDistance: 30,
-      initialDistanceImperial: 18.6411
     }
   },
 
   filters: {
-    unitsKm(data, isMetric ) {
-      if (isMetric) {
-        return new Intl.NumberFormat('latn', { style: 'decimal', maximumFractionDigits: 2 }).format(data) + ' km';
-      }
-
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-      return new Intl.NumberFormat('latn', { style: 'decimal', maximumFractionDigits: 2 }).format(data * 0.621371) + ' miles';
+    km(data) {
+      return data.toFixed(2) + ' km';
     },
 
-    unitsM(data, isMetric) {
-      if (isMetric) {
-        return new Intl.NumberFormat('latn', { maximumFractionDigits: 2 }).format(data) + ' m';
-      }
-      
-      return new Intl.NumberFormat('latn', { maximumFractionDigits: 2 }).format(data * 3.28084) + ' feet';
-    }
+    m(data) {
+      return data.toFixed(2) + ' m';
+    },   
   },
 
   computed: {
     horizonDistance() {
-      var observer = '';
+      let distance = Math.sqrt( Math.pow(this.observer, 2) + (2 * this.earthRadius * this.observer));
 
-      if (!this.isMetric) {
-        observer = this.observer * 0.3048;
-      } else {
-        observer = this.observer;
-      }
-
-      let distance = Math.sqrt( Math.pow(observer, 2) + (2 * this.earthRadius * observer));
       return distance;
     },
 
     underHorizon() {
-      var distanceToObject = '';
-
-      if (!this.isMetric) {
-        distanceToObject = this.distanceToObject * 1609.34;
-      } else {
-        distanceToObject = this.distanceToObject * 1000;
-      }
+      let distanceToObject = this.distanceToObject * 1000;
 
       let diffDist = distanceToObject - this.horizonDistance;
 
@@ -116,10 +95,6 @@ export default {
 
     heightObject: {
       get() {
-        if (!this.isMetric) {
-          return this.initialHeightObjectImperial;
-        }
-
         if (this.isFromExample) {
           return this.heightFromExampleObject;
         }
@@ -128,20 +103,12 @@ export default {
       },
 
       set(newValue) {
-        if (!this.isMetric) {
-          this.initialHeightObjectImperial = newValue;
-        }
-
         this.initialHeightObject = newValue;
       }
     },
 
     observer: {
       get() {
-        if (!this.isMetric) {
-          return this.initialObserverImperial;
-        }
-
         if (this.isFromExample) {
           return this.heightFromExampleObserver;
         }
@@ -150,24 +117,12 @@ export default {
       },
 
       set(newValue) {
-        if (!this.isMetric) {
-          this.initialObserverImperial = newValue;
-        }
-
         this.initialObserver = newValue;
       }
     },
 
     distanceToObject: {
       get() {
-        if (!this.isMetric) {
-          if (this.distanceFromMap != '') {
-            return (this.distanceFromMap * 0.621371).toFixed(2);
-          }
-
-          return this.initialDistanceImperial;
-        }
-
         if (this.distanceFromMap != '') {
           return this.distanceFromMap;
         }
@@ -176,38 +131,12 @@ export default {
       },
 
       set(newValue) {
-        if (!this.isMetric) {
-          this.initialDistanceImperial = newValue;
-        }
-
         this.initialDistance = newValue;
       }
     },
 
     buildingVisible() {
-      if (!this.isMetric) {
-        var heightObject = this.heightObject * 0.3048;
-      } else {
-        var heightObject = this.heightObject;
-      }
-
-      return heightObject - this.underHorizon;
-    },
-
-    meterOrFeet() {
-      if (!this.isMetric) {
-        return 'feet';
-      } 
-
-      return 'meters';
-    },
-
-    kmOrMiles() {
-      if (!this.isMetric) {
-        return 'miles';
-      } 
-
-      return 'km';
+      return this.heightObject - this.underHorizon;
     }
   },
 

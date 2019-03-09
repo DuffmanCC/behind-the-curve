@@ -1,63 +1,30 @@
 <template>
-  <section class="border p-5 mb-5 rounded font-thin max-w-sm w-full">
-    <h2 class="mb-5">Examples</h2>
+  <section class="mb-5 font-thin w-full">
+    <h2 class="mb-5 font-thin">Examples</h2>
     
     <Example
       v-for="example in examples"
-      :distance="example.distance"
+      :id="example.id"
       :from="example.from"
       :to="example.to"
       :url="example.image"
+      @click.native="selectExample(example)"
     />
   </section>
 </template>
 
 <script>
   import Example from './Example';
+  import examples from '../examples.json';
+  import { getDistanceFromTwoPoints } from '../utils/functions';
 
   export default {
     name: 'Examples',
 
     data() {
       return {
-        examples: {
-          example_1: {
-            distance: 225,
-            from: {
-              description: 'Pico de la Musara', 
-              place: 'Tarragona - Spain',
-              height: 1500,
-              lat: 41.10,
-              lng: 0.87
-            },
-            to: {
-              description: 'Sierra de Tramuntana',
-              place: 'Mallorca - Spain',
-              height: 1000,
-              lat: 39.70,
-              lng: 2.65
-            },
-            image: 'https://www.instagram.com/p/BurUOp0BWII/',
-          },
-          example_2: {
-            distance: 64,
-            from: {
-              description: 'Pico de la Musara', 
-              place: 'Tarragona - Spain',
-              height: 1500,
-              lat: 41.10,
-              lng: 0.87
-            },
-            to: {
-              description: 'Sierra de Tramuntana',
-              place: 'Mallorca - Spain',
-              height: 1500,
-              lat: 39.70,
-              lng: 2.65
-            },
-            image: 'https://www.instagram.com/p/BurUOp0BWII/',
-          }
-        }
+        examples: examples,
+        isSelected: false
       }
     },
 
@@ -66,7 +33,40 @@
     },
 
     methods: {
+      selectExample(example) {
+        var distance = getDistanceFromTwoPoints(example.from.lat, example.from.lng, example.to.lat, example.to.lng).toFixed(2);
 
-    }
+        Event.$emit('dataFromExmaple', {
+          distance: distance,
+          from: {
+            description: example.from.description, 
+            place: example.from.place,
+            height: example.from.height,
+            lat: example.from.lat,
+            lng: example.from.lng
+          },
+          to: {
+            description: example.to.description, 
+            place: example.to.place,
+            height: example.to.height,
+            lat: example.to.lat,
+            lng: example.to.lng
+          },
+        });
+
+        this.$children.forEach((item) => {
+          if (item.id == example.id) {
+            item.isSelected = true;
+            // item.isMap = true;
+          }
+
+          if (item.id != example.id) {
+            item.isSelected = false;
+            item.isMap = true;
+            item.isImage = false;
+          }
+        })
+      }
+    },
   }
 </script>

@@ -1,4 +1,3 @@
 @tailwind preflight;
 @tailwind components;
 @tailwind utilities;
-@import '~pretty-checkbox/dist/pretty-checkbox.min.css';

@@ -1,5 +1,5 @@
 <template>
-  <a :href="imageSrc" target="_blank">
+  <a :href="url" target="_blank">
     <img :src="imageSrc" :alt="imageTitle">
   </a>
 </template>

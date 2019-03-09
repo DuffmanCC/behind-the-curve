@@ -1,45 +1,34 @@
 <template>
   <div id="app">
-    <div class="h-screen w-screen">
-      <div class="container text-blue flex flex-col items-center">
-        <Header></Header>
+    <div class="container text-blue flex flex-col items-center max-w-lg">
+      <Header></Header>
 
-        <div class="mb-6">
-          <pCheck class="p-switch p-fill pretty" color="primary" toggle v-model="isMetric">
-            metric system
-            <label slot="off-label">imperial system</label>
-          </pCheck>
-        </div>
+      <Content 
+        :distanceFromMap="distanceFromMap" 
+        :heightFromExampleObserver="heightFromExampleObserver"
+        :heightFromExampleObject="heightFromExampleObject"
+        :isFromExample="isFromExample"
+        >
+      </Content>
 
-        <Content 
-          :distanceFromMap="distanceFromMap" 
-          :isMetric="isMetric"
-          :heightFromExampleObserver="heightFromExampleObserver"
-          :heightFromExampleObject="heightFromExampleObject"
-          :isFromExample="isFromExample"
-          >
-        </Content>
+      <Examples></Examples>
 
-        <Examples></Examples>
-
-        <!-- <Paint></Paint> -->
-      </div><!-- .container -->
-    </div>
+      <Footer></Footer>
+    </div><!-- .container -->
 
     <modal name="info" class="w-full">
       <div class="p-5">
         <h3 class="mb-5">Info:</h3>
 
         <ul class="list-reset">
+          <li>We use units of the metric system</li>
           <li>Earth radius: 6371000 meters.</li>
-          <li>1 mile = 1609.34 km.</li>
-          <li>1 foot = 0.3048 meters.</li>
         </ul>      
       </div>   
     </modal>
 
     <modal name="map" width="100%" height="auto" classes="p-5 relative">
-      <Gmap style="height: auto" :isMetric="isMetric"></Gmap>
+      <Gmap style="height: auto"></Gmap>
     </modal>
   </div>
 </template>
@@ -50,22 +39,23 @@ import Content from './components/Content'
 import Gmap from './components/Map'
 import Examples from './components/Examples'
 import Paint from './components/Paint'
+import Footer from './components/Footer'
 import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
 
 export default {
   name: 'app',
 
   components: {
-    Header, Content, Gmap, Paint, Examples
+    Header, Content, Gmap, Paint, Examples, Footer
   },
 
   data() {
     return {
       distanceFromMap: '',
-      isMetric: true,
       heightFromExampleObserver: '',
       heightFromExampleObject: '',
-      isFromExample: false
+      isFromExample: false,
+      exampleSelectedId: ''
     }
   },
 
@@ -77,6 +67,7 @@ export default {
       this.heightFromExampleObserver = dataFromExmaple.from.height;
       this.heightFromExampleObject = dataFromExmaple.to.height;
       this.isFromExample = true;
+      this.exampleSelectedId = dataFromExmaple.id;
     });
   },
 
