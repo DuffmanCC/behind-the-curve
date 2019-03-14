@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import { toRad, getDistanceFromTwoPoints } from '../utils/functions';
+  import geo from '../utils/functions';
 
   export default {
     name: 'Gmap',
@@ -47,7 +47,7 @@
 
     computed: {
       distanceBetweenMarkers() {
-        let distance = getDistanceFromTwoPoints(this.markers[0].position.lat, this.markers[0].position.lng, this.markers[1].position.lat, this.markers[1].position.lng).toFixed(2);
+        let distance = geo.getDistanceFromTwoPoints(this.markers[0].position.lat, this.markers[0].position.lng, this.markers[1].position.lat, this.markers[1].position.lng).toFixed(2);
         Event.$emit('distanceFromMap', distance);
 
         return distance;

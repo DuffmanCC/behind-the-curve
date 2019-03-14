@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 border rounded mb-5 cursor-pointer" :class="{ 'bg-grey-lighter transition-duration-300': isSelected }">
+  <div class="p-5 border rounded mb-5 cursor-pointer" :class="{ 'bg-blue-lightest transition-duration-300': isSelected }">
     <Instagram :url="url" v-if="isImage" class="mb-5 block"></Instagram>
 
     <GmapMap
@@ -28,8 +28,19 @@
     <div class="flex justify-between mb-3">
       <span>Distance: {{ distance }} km</span>
       <div class="text-xl">
-        <i class="fas fa-map-marked-alt ml-2 mr-2" @click="showMap()"></i>
-        <i class="fas fa-camera-retro" @click="showImage()"></i>
+        <button class="btn" @click="showMap()">
+          <span class="fa-stack">
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fas fa-map-marked-alt fa-stack-1x fa-inverse"></i>
+          </span>         
+        </button>
+
+        <button class="btn" @click="showImage()">
+          <span class="fa-stack">
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fas fa-camera-retro fa-stack-1x fa-inverse"></i>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -53,7 +64,7 @@
 
 <script>
   import Instagram from './Instagram';
-  import { middlePoint, getDistanceFromTwoPoints } from '../utils/functions';
+  import geo from '../utils/functions';
 
   export default {
     name: 'Exmaple',
@@ -72,11 +83,11 @@
 
     computed: {
       midPoint() {
-        return middlePoint(this.from.lat, this.from.lng, this.to.lat, this.to.lng)
+        return geo.middlePoint(this.from.lat, this.from.lng, this.to.lat, this.to.lng)
       },
 
       distance() {
-        return getDistanceFromTwoPoints(this.from.lat, this.from.lng, this.to.lat, this.to.lng).toFixed(2);
+        return geo.getDistanceFromTwoPoints(this.from.lat, this.from.lng, this.to.lat, this.to.lng).toFixed(2);
       },
 
       line() {

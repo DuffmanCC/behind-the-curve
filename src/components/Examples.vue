@@ -1,6 +1,39 @@
 <template>
   <section class="mb-5 font-thin w-full">
-    <h2 class="mb-5 font-thin">Examples</h2>
+    <div class="flex justify-between items-center mb-5">
+      <h2 class="font-thin">Examples</h2>
+
+      <button class="btn" @click="showMapWithExamples()">
+        <span class="fa-stack">
+          <i class="fas fa-square fa-stack-2x"></i>
+          <i class="fas fa-globe-africa fa-stack-1x fa-inverse"></i>
+        </span>
+      </button>
+    </div>
+
+    <GmapMap
+      :center="{lat:20, lng:-30}"
+      :zoom="2"
+      :options="mapOptions"
+      class="w-full mb-5 h-64"
+      v-if="isMapExamples"
+    >
+      <GmapMarker
+        v-for="(example, index) in examples"
+        :position="{lat: example.to.lat, lng: example.to.lng}"
+        :clickable="true"
+        :draggable="false"
+        @click="toogleInfoWindow(example, index)"
+      />
+      <GmapInfoWindow
+        :opened="infoWindow.isOpened"
+        :options="infoWindow.options"
+        :position="infoWindow.position"
+        @closeclick="infoWindow.isOpened = false"
+      >
+        <img :src="infoWindow.content" style="width: 100px; height: 100px;">
+      </GmapInfoWindow>
+    </GmapMap>
     
     <Example
       v-for="example in examples"
@@ -16,15 +49,32 @@
 <script>
   import Example from './Example';
   import examples from '../examples.json';
-  import { getDistanceFromTwoPoints } from '../utils/functions';
+  import geo from '../utils/functions';
 
   export default {
-    name: 'Examples',
+    components: {
+      Example
+    },
 
     data() {
       return {
         examples: examples,
-        isSelected: false
+        isSelected: false,
+        isMapExamples: false,
+        mapOptions: {
+          disableDefaultUI: true
+        },
+        infoWindow: {
+          options: {
+            pixelOffset: {
+              width: 0,
+              height: -26,
+            },
+          },
+          position: null,
+          isOpened: false,
+          content: ''
+        }
       }
     },
 
@@ -34,7 +84,7 @@
 
     methods: {
       selectExample(example) {
-        var distance = getDistanceFromTwoPoints(example.from.lat, example.from.lng, example.to.lat, example.to.lng).toFixed(2);
+        var distance = geo.getDistanceFromTwoPoints(example.from.lat, example.from.lng, example.to.lat, example.to.lng).toFixed(2);
 
         Event.$emit('dataFromExmaple', {
           distance: distance,
@@ -66,7 +116,28 @@
             item.isImage = false;
           }
         })
+      },
+
+      showMapWithExamples() {
+        this.isMapExamples = !this.isMapExamples;
+      },
+
+      toogleInfoWindow(example) {
+        this.infoWindow.isOpened = false;
+
+        this.infoWindow.position = {
+          lat: example.to.lat, 
+          lng: example.to.lng
+        };
+
+        this.infoWindow.content = example.imageSrc;
+
+        this.infoWindow.isOpened = true;
       }
+    },
+
+    beforeCreate: function () {
+      this.$options.components.Instagram = require('./Instagram.vue').default
     },
   }
 </script>

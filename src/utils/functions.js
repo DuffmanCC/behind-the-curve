@@ -1,4 +1,4 @@
-export function middlePoint(lat1, lng1, lat2, lng2) {
+function middlePoint(lat1, lng1, lat2, lng2) {
   const φ1 = lat1 * Math.PI / 180, λ1 = lng1 * Math.PI / 180;
   const φ2 = lat2 * Math.PI / 180;
   const Δλ = (lng2 - lng1) * Math.PI / 180;
@@ -21,7 +21,7 @@ export function middlePoint(lat1, lng1, lat2, lng2) {
   }
 }
 
-export function getDistanceFromTwoPoints(lat1, lng1, lat2, lng2) {
+function getDistanceFromTwoPoints(lat1, lng1, lat2, lng2) {
   let R = 6371000; // Average earth radius
   let dLat = toRad(lat2 - lat1);
   let dLong = toRad(lng2 - lng1);
@@ -34,6 +34,12 @@ export function getDistanceFromTwoPoints(lat1, lng1, lat2, lng2) {
   return (d / 1000);
 }
 
-export function toRad(x) {
+function toRad(x) {
   return x * Math.PI / 180;
+}
+
+export default {
+  middlePoint: middlePoint,
+  getDistanceFromTwoPoints: getDistanceFromTwoPoints,
+  toRad: toRad
 }

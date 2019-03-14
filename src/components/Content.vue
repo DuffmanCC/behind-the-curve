@@ -8,34 +8,41 @@
       <label class="block mb-2 pr-4">
         Height of the observer in meters:
       </label>
-      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="observer">
+      <input class="input" type="number" v-model="observer">
       <p class="text-red text-sm" v-if="observer <= 0">Hight of the observer must be greater than 0.</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <p class="mb-2 pr-4">Horizon distance:</p>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ horizonDistance | km }}</p>
+      <p class="input">{{ horizonDistance | km }}</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <p class="mb-2 pr-4">Distance to object in Km:</p>
       <p class="text-sm italic mb-2">
-        Enter a distance in km or use the map <span class="font-normal cursor-pointer" @click="showMap()"><i class="fas fa-map-marked-alt ml-2 text-xl"></i></span>
+        Enter a distance in km or use the map
+          
+        <button class="btn" @click="showMap()">
+          <span class="fa-stack">
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fas fa-map-marked-alt fa-stack-1x fa-inverse"></i>
+          </span>         
+        </button>
       </p>
 
-      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" v-model="distanceToObject">
+      <input class="input" v-model="distanceToObject">
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <p class="mb-2 pr-4">Under horizon:</p>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ underHorizon | m }}</p>
+      <p class="input">{{ underHorizon | m }}</p>
     </div>
 
     <div class="mb-6" v-if="observer > 0">
       <label class="block mb-2 pr-4">
         Height of the object you want to see in meters:
       </label>
-      <input class="bg-blue-lightest hover:bg-blue-lighter appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 font-thin text-blue-darker leading-tight focus:outline-none focus:bg-white focus:border-purple" type="number" v-model="heightObject">
+      <input class="input" type="number" v-model="heightObject">
       <p class="text-red text-sm" v-if="heightObject < 0">Hight of the building must be greater than 0.</p>
     </div>
 
@@ -43,7 +50,7 @@
       <label class="block mb-2 pr-4" for="inline-full-name">
         The top of the object is {{ isVisible() }}:
       </label>
-      <p class="bg-blue-lightest appearance-none border-2 border-blue-lightest rounded w-full py-2 px-4 text-blue-darker">{{ buildingVisible | m }}</p>
+      <p class="input">{{ buildingVisible | m }}</p>
     </div>
   </section>
 </template>

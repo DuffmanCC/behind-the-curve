@@ -8,7 +8,7 @@
   import axios from 'axios';
 
   export default {
-    name: 'Instragram',
+    name: 'Instagram',
 
     props: ['url'],
 
