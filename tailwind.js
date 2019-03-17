@@ -888,7 +888,7 @@ module.exports = {
   modules: {
     appearance: ['responsive'],
     backgroundAttachment: ['responsive'],
-    backgroundColors: ['responsive', 'hover', 'focus'],
+    backgroundColors: ['responsive', 'hover', 'focus', 'active'],
     backgroundPosition: ['responsive'],
     backgroundRepeat: ['responsive'],
     backgroundSize: ['responsive'],
@@ -990,6 +990,11 @@ module.exports = {
         'opacity': 'opacity',
         'transform': 'transform',
       },
+    }),
+    require('tailwindcss-spinner')({
+      color: '#606f7a',
+      size: '5em', // size of the spinner (used for both width and height)
+      border: '1rem', // border-width of the spinner (shouldn't be bigger than half the spinner's size)
     }),
   ],
 

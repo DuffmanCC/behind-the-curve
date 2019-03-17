@@ -9,29 +9,33 @@
       <i class="fas fa-globe-africa" style="font-size: 150px"></i>
     </div>
     
-    <h1 class="mb-10 text-3xl text-center font-thin">Earth Curvature Calculator</h1>
+    <h1 class="mb-10 text-3xl text-center font-thin">Behind The Curve</h1>
+
+    
 
     <modal name="info" @before-open="beforeOpen">
-<!--       <div class="p-5 h-24">
+      <div class="p-5 h-24">
         <h3 class="mb-5 font-bold">Info:</h3>
 
         <ul class="list-reset">
-          <li>- We use units of the metric system</li>
           <li>- Earth radius: 6371000 meters.</li>
         </ul>
-
-        <div>
-          <img src="../assets/chart.png" alt="">
-        </div>   
-      </div>   -->
-      <v-dialog/>
+        
+        <!-- <earthDraw class="w-full"></earthDraw> -->
+      </div>  
     </modal>
   </header>
 </template>
 
 <script>
+// import earthDraw from '../assets/earth-curvature.svg'; // TODO
+
 export default {
   name: 'Header',
+
+  components: {
+
+  },
 
   methods: {
     showInfo () {

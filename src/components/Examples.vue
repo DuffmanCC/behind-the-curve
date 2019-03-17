@@ -3,12 +3,7 @@
     <div class="flex justify-between items-center mb-5">
       <h2 class="font-thin">Examples</h2>
 
-      <button class="btn" @click="showMapWithExamples()">
-        <span class="fa-stack">
-          <i class="fas fa-square fa-stack-2x"></i>
-          <i class="fas fa-globe-africa fa-stack-1x fa-inverse"></i>
-        </span>
-      </button>
+      <buttonToggle before="Show map" after="Hide map" icon="fas fa-globe-africa" @click.native="showMapWithExamples()"></buttonToggle>
     </div>
 
     <GmapMap
@@ -30,8 +25,19 @@
         :options="infoWindow.options"
         :position="infoWindow.position"
         @closeclick="infoWindow.isOpened = false"
+        class="relative"
       >
-        <img :src="infoWindow.content" style="width: 100px; height: 100px;">
+        <div v-if="infoWindow.hasImage">
+          <div class="spinner pin" v-if="isSpinner" style="top: 0px; width: 100px; height: 100px;"></div>
+          <img :src="infoWindow.content" v-if="!isSpinner" style="width: 100px; height: 100px;">         
+        </div>
+
+        <div v-if="!infoWindow.hasImage">
+          <span class="fa-stack fa-2x text-grey" style="font-size: 2rem">
+            <i class="fas fa-camera fa-stack-1x"></i>
+            <i class="fas fa-ban fa-stack-2x"></i>
+          </span>
+        </div>
       </GmapInfoWindow>
     </GmapMap>
     
@@ -50,17 +56,19 @@
   import Example from './Example';
   import examples from '../examples.json';
   import geo from '../utils/functions';
+  import axios from 'axios';
 
   export default {
-    components: {
-      Example
-    },
+    name: 'Examples',
+
+    components: { Example },
 
     data() {
       return {
         examples: examples,
         isSelected: false,
         isMapExamples: false,
+        isSpinner: false,
         mapOptions: {
           disableDefaultUI: true
         },
@@ -73,7 +81,8 @@
           },
           position: null,
           isOpened: false,
-          content: ''
+          content: '',
+          hasImage: false
         }
       }
     },
@@ -130,7 +139,18 @@
           lng: example.to.lng
         };
 
-        this.infoWindow.content = example.imageSrc;
+        if (example.image != '') {
+          this.infoWindow.hasImage = true;
+          this.isSpinner = true;
+
+          axios.get('https://api.instagram.com/oembed?url=' + example.image)
+            .then(response => {
+              this.infoWindow.content = response.data.thumbnail_url;
+              this.isSpinner = false;
+            });
+        } else {
+          this.infoWindow.hasImage = false;
+        }
 
         this.infoWindow.isOpened = true;
       }

@@ -1,6 +1,14 @@
 <template>
   <div class="p-5 border rounded mb-5 cursor-pointer" :class="{ 'bg-blue-lightest transition-duration-300': isSelected }">
-    <Instagram :url="url" v-if="isImage" class="mb-5 block"></Instagram>
+    <Instagram :url="url" v-if="isImage && hasThumbnail" class="mb-5 block"></Instagram>
+
+    <div v-if="isImage && !hasThumbnail" class="text-center pb-10">
+      <span class="fa-stack fa-2x text-grey" style="font-size: 5rem">
+        <i class="fas fa-camera fa-stack-1x"></i>
+        <i class="fas fa-ban fa-stack-2x"></i>
+      </span>
+    </div>
+    
 
     <GmapMap
       :center="midPoint"
@@ -96,6 +104,10 @@
           {lat: this.to.lat, lng: this.to.lng},
         ]
       },
+
+      hasThumbnail() {
+        return (this.url != '');
+      }
 
       // TO DO
       // zoom() {
