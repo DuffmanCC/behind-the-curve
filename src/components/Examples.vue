@@ -10,7 +10,7 @@
       :center="{lat:20, lng:-30}"
       :zoom="2"
       :options="mapOptions"
-      class="w-full mb-5 h-64"
+      class="w-full mb-5 h-64 absolute"
       v-if="isMapExamples"
     >
       <GmapMarker

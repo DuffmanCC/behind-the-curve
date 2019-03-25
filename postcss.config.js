@@ -9,22 +9,13 @@ module.exports = {
             add: true,
             grid: true
         }),
+        
         //Only add purgecss in production
-        process.env.NODE_ENV === "production"? purgecss({
-            content: [
-                "./src/**/*.html", 
-                "./src/**/*.vue"
-            ]
-        }): ""        
-    ],
-
-  chainWebpack: (config) => {
-    const svgRule = config.module.rule('svg');
-
-    svgRule.uses.clear();
-
-    svgRule
-      .use('vue-svg-loader')
-      .loader('vue-svg-loader');
-  },
+        // process.env.NODE_ENV === "production" ? purgecss({
+        //     content: [
+        //         "./src/**/*.html", 
+        //         "./src/**/*.vue"
+        //     ]
+        // }): ""        
+    ]
 };

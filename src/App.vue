@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="container text-blue-darker flex flex-col items-center max-w-md">
+    <div class="container text-blue-darker flex flex-col items-center max-w-md font-sans">
       <Header></Header>
 
       <Content 
@@ -57,10 +57,6 @@ export default {
       this.isFromExample = true;
       this.exampleSelectedId = dataFromExmaple.id;
     });
-  },
-
-  methods: {
-
   }
 }
 </script>

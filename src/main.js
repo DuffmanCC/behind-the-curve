@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
-import * as VueKonva from 'vue-konva'
-import VModal from 'vue-js-modal'
-import "./main.css"
-import * as VueGoogleMaps from 'vue2-google-maps'
+import Vue from 'vue';
+import App from './App.vue';
+import * as VueKonva from 'vue-konva';
+import VModal from 'vue-js-modal';
+import "./main.css";
+import * as VueGoogleMaps from 'vue2-google-maps';
 import PrettyCheck from 'pretty-checkbox-vue/check';
 import buttonToggle from './components/buttonToggle.vue';
 import SvgIcon from 'vue-svgicon';
@@ -23,7 +23,7 @@ window.Event = new Vue();
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyB2A0Rc9Mssp2Cj9EyzjfpCcN3yLO3iL1c",
+    key: "AIzaSyDygk65evGwqGAQXOhX8uXGZtzZCgxs7xQ",
     libraries: "geometry,places,drawing",
   },
 });
