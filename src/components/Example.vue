@@ -1,6 +1,14 @@
 <template>
   <div class="p-5 border rounded mb-5 cursor-pointer" :class="{ 'bg-blue-lightest transition-duration-300': isSelected }">
-    <Instagram :url="url" v-if="isImage && hasThumbnail" class="mb-5 block"></Instagram>
+    <div v-if="isInstragramLink">
+      <Instagram :url="url" v-if="isImage && hasThumbnail" class="mb-5 block"></Instagram>
+    </div>
+    
+    <div v-else class="mb-5 block">
+      <a :href="url" target="_blank" v-if="isImage && hasThumbnail">
+        <img :src="url" class="w-full h-auto">
+      </a>
+    </div>
 
     <div v-if="isImage && !hasThumbnail" class="text-center pb-10">
       <span class="fa-stack fa-2x text-grey" style="font-size: 5rem">
@@ -85,7 +93,7 @@
       return {
         isImage: false,
         isMap: true,
-        isSelected: false
+        isSelected: false,
       }
     },
 
@@ -107,6 +115,16 @@
 
       hasThumbnail() {
         return (this.url != '');
+      },
+
+      isInstragramLink() {
+        let str = this.url;
+
+        if (str.includes("instagram")) {
+          return true;
+        }
+
+        return false;
       }
 
       // TO DO
