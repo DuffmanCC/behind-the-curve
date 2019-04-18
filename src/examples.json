@@ -70,5 +70,23 @@
       "lng": -58.357
     },
     "image": "https://media-cdn.tripadvisor.com/media/photo-s/08/7a/42/6a/farol-de-colonia-do-sacramento.jpg"
+  },
+  "example_5": {
+    "id": 4,
+    "from": {
+      "description": "La Mussara, Serra de la Mussara", 
+      "place": "Tarragona - Spain",
+      "height": 1055.6,
+      "lat": 41.152,
+      "lng": 1.320
+    },
+    "to": {
+      "description": "Puig Major, Serra de Tramuntana",
+      "place": "Mallorca - España",   
+      "height": 1445,
+      "lat": 39.480,
+      "lng": 2.480
+    },
+    "image": "https://pbs.twimg.com/media/DtHLN5UXcAEcWQ8.jpg"
   }
 }
