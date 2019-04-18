@@ -77,15 +77,15 @@
       "description": "La Mussara, Serra de la Mussara", 
       "place": "Tarragona - Spain",
       "height": 1055,
-      "lat": 41.152,
-      "lng": 1.320
+      "lat": 41.256,
+      "lng": 1.054
     },
     "to": {
       "description": "Puig Major, Serra de Tramuntana",
       "place": "Mallorca - España",   
       "height": 1445,
-      "lat": 39.480,
-      "lng": 2.480
+      "lat": 39.808,
+      "lng": 2.786
     },
     "image": "https://pbs.twimg.com/media/DtHLN5UXcAEcWQ8.jpg"
   }
